@@ -1,0 +1,37 @@
+* {
+    box-sizing: border-box;
+}
+
+:root {
+    --cell-size: 50px;
+}
+
+.board{
+    border: 1px solid black;
+    border-collapse: collapse;
+    margin: 100px auto;
+}
+
+.cell{
+    width: var(--cell-size);
+    height: var(--cell-size);
+    border: 1px solid black;
+    text-align: center;
+}
+
+.selected{
+    background-color: orange;
+}
+
+.uncover{
+    background-color: white;
+}
+
+.cover{
+    background-color: rgb(225, 149, 7);
+}
+
+.cover:hover{
+    background-color: rgb(224, 173, 79);
+    cursor: pointer;
+}
