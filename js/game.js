@@ -4,32 +4,42 @@ const LEVELS = [{ size: 4, minesCount: 2 }, { size: 6, minesCount: 14 }, { size:
 const LIVES = 2
 const VICTORY = 1
 const LOSS = 0
+
 var gGame
 
 function onInit(level) {
     gGame = {
         isOn: true,
         isFirstClick: true,
-        currLevelIdx : level,
+        currLevelIdx: level,
         currLevel: LEVELS[level],
         lives: LIVES,
-        smiley: HAPPY
+        emoji: HAPPY,
+        isHintOn: false
     }
+    gSituations = []
 
+    
     createBoard()
     addMines()
     setMinesNegsCount()
     renderBoard()
     renderLives()
-    renderSmiley()
+    renderEmoji()
+    renderHints()
 }
 
 function onCellClicked(i, j) {
+    saveSituation()
     var cell = gBoard[i][j]
 
     if (!gGame.isOn) return
     if (cell.isShown) return
     if (cell.isMarked) return
+    if (gGame.isHintOn){
+        handleClickOnHintMode(i,j)
+        return
+    } 
     if (gGame.isFirstClick && cell.isMine) {
         moveMine(i, j)
     }
@@ -51,9 +61,11 @@ function onCellClicked(i, j) {
 }
 
 function onCellMarked(elCell, i, j, event) {
+    saveSituation()
     event.preventDefault()
     if (elCell.classList.contains('cover') && gGame.isOn) {
         gBoard[i][j].isMarked = !gBoard[i][j].isMarked
+        gBoard[i][j].is
         if (checkVictory()) {
             gameOver(VICTORY)
         }
@@ -61,10 +73,10 @@ function onCellMarked(elCell, i, j, event) {
     }
 }
 
-function onLevelClicked(level,idx){
+function onLevelClicked(level, idx) {
 
     var levelBtns = document.querySelectorAll('.level-btn')
-    for(var i = 0; i < levelBtns.length; ++i){
+    for (var i = 0; i < levelBtns.length; ++i) {
         levelBtns[i].classList.remove('curr-level-btn')
         console.log('levelBtns[i]: ', levelBtns[i])
     }
@@ -79,7 +91,7 @@ function expandShown(rowIdx, colIdx) {
             if (i === rowIdx && j === colIdx) continue
             if (j < 0 || j >= gBoard[0].length) continue
             var currCell = gBoard[i][j]
-            if (!currCell.isMine && !currCell.isShown) {
+            if (!currCell.isMine && !currCell.isShown && !currCell.isMarked) {
                 currCell.isShown = true
                 if (!currCell.minesAroundCount) {
                     expandShown(i, j)
@@ -105,18 +117,18 @@ function checkVictory() {
 function gameOver(isVictory) {
     gGame.isOn = false
     if (isVictory) {
-        gGame.smiley = WIN
-        renderSmiley()
+        gGame.emoji = WIN
+        renderEmoji()
         console.log('victory!')
     } else {
-        gGame.smiley = SAD
-        renderSmiley()
+        gGame.emoji = SAD
+        renderEmoji()
         showAllCells()
         console.log('game over')
     }
 }
 
-function onResetGame(){
+function onResetGame() {
     onInit(gGame.currLevelIdx)
 }
 
@@ -125,10 +137,10 @@ function updateLives() {
     document.querySelector('.lives span').innerHTML = gGame.lives
 }
 
-function renderSmiley(){
-    document.querySelector('.smiley').innerHTML = gGame.smiley
+function renderEmoji() {
+    document.querySelector('.emoji').innerHTML = gGame.emoji
 }
 
 function renderLives() {
-    document.querySelector('.lives').innerHTML = gGame.lives
+    document.querySelector('.lives span').innerHTML = gGame.lives
 }
