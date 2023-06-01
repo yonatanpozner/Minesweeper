@@ -17,11 +17,17 @@
             </div>
             <div>
                 <p class="lives"><span></span> lives left</p>
-                <button class="smiley" onclick="onResetGame()"></button>
+                <button class="emoji" onclick="onResetGame()"></button>
+                <div>
+                    <button class="hint-btn" onclick="onHintClicked(this)"></button>
+                    <button class="hint-btn" onclick="onHintClicked(this)"></button>
+                    <button class="hint-btn" onclick="onHintClicked(this)"></button>
+                </div>
             </div>
             <table class="board">
                 <tbody > </tbody>
             </table>
+            <button class="undo" onclick="ondo()"> undo </button>
             <p class="creator"> 
                 Yonatan Pozner 
             </p>
@@ -30,6 +36,8 @@
             <script src="js/board.js"></script>
             <script src="js/utils.js"></script>
             <script src="js/emojis.js"></script>
+            <script src="js/hints.js"></script>
+            <script src="js/ondo.js"></script>
         </div>
     </body>
 </html>
