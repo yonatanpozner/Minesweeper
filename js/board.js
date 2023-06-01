@@ -12,7 +12,8 @@ function createBoard() {
                 minesAroundCount: 0,
                 isShown: false,
                 isMine: false,
-                isMarked: false
+                isMarked: false,
+                isHintShown: false
             }
         }
     }
@@ -87,19 +88,10 @@ function showAllCells() {
 
 function getTextFromCell(cell) {
     var text = ''
-    if (cell.isShown || cell.isMarked) {
-        if (cell.isMine && !cell.isMarked) {
-            text = MINE
-        } else {
-            if (cell.minesAroundCount) {
-                text = cell.minesAroundCount
-            } else {
-                if (cell.isMarked) {
-                    text = FLAG
-                }
-            }
-        }
-    }
+    if(cell.isMarked) text = FLAG
+    if(!cell.isMarked && !cell.isShown) text = ''
+    if(!cell.isMarked && cell.isShown && !cell.isMine && cell.minesAroundCount) text = cell.minesAroundCount 
+    if(!cell.isMarked && cell.isShown && cell.isMine) text = MINE
     return text
 }
 
