@@ -88,10 +88,26 @@
 
 }
 
-.smiley{
+.emoji{
     width : 40px;
     display: inline;
     border: 2px solid white;
     background-color: white; 
     font-size: 20px;
+}
+
+.emoji:hover{
+    cursor: pointer;
+}
+
+.hint-btn{
+    border: none;
+    color: black;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 20px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+    background-color: white; 
 }
