@@ -3,6 +3,7 @@
 var gBoard
 
 function createBoard() {
+    console.log('gGame: ', gGame)
     gBoard = []
     for (var i = 0; i < gGame.currLevel.size; ++i) {
         gBoard[i] = []
@@ -18,15 +19,12 @@ function createBoard() {
 }
 
 function addMines() {
-    // var size = gGame.currLevel.size
-    // var randomCell = createMixedNumsArrRangeOf(size ** 2)
-    // for (var i = 0; i < gGame.currLevel.minesCount; ++i) {
-    //     var num = randomCell.pop()
-    //     gBoard[Math.floor(num / size)][num % size].isMine = true
-    // }
-    gBoard[1][1].isMine = true
-    gBoard[3][3].isMine = true
-    setMinesNegsCount()
+    var size = gGame.currLevel.size
+    var randomCell = randomIntArrayInRange(size ** 2)
+    for (var i = 0; i < gGame.currLevel.minesCount; ++i) {
+        var num = randomCell.pop()
+        gBoard[Math.floor(num / size)][num % size].isMine = true
+    }
 }
 
 function renderBoard() {
@@ -36,7 +34,6 @@ function renderBoard() {
         strHTML += '<tr>'
         for (var j = 0; j < gBoard[0].length; ++j) {
             var cell = gBoard[i][j]
-            var minesAroundCount = cell.minesAroundCount
 
             var className = cell.isShown ? 'uncover' : 'cover'
             var displayMode = gGame.isShown ? 'none' : 'block'
@@ -44,7 +41,7 @@ function renderBoard() {
 
             strHTML += `<td class="cell ${className}"
                         data-i=${i}  data-j=${j}
-                        onclick="onCellClicked(this,${i},${j})" 
+                        onclick="onCellClicked(${i},${j})" 
                         oncontextmenu="onCellMarked(this,${i},${j},event)">`
             strHTML += `<p style="display: ${displayMode};">${text}</p>`
             strHTML += '</td>'
@@ -59,7 +56,7 @@ function setMinesNegsCount() {
         for (var j = 0; j < gBoard[0].length; ++j) {
             var cell = gBoard[i][j]
             if (!cell.isMine) {
-                cell.minesAroundCount += countMinesAround(i, j)
+                cell.minesAroundCount = countMinesAround(i, j)
             }
         }
     }
@@ -104,4 +101,18 @@ function getTextFromCell(cell) {
         }
     }
     return text
+}
+
+function moveMine(idxI,idxJ){
+    for (var i = 0; i < gGame.currLevel.size; ++i) {
+        for (var j = 0; j < gGame.currLevel.size; ++j) {
+            if(!gBoard[i][j].isMine && i != idxI && j != idxJ){
+                gBoard[i][j].isMine = true 
+                gBoard[idxI][idxJ].isMine = false
+                setMinesNegsCount()
+                renderBoard()
+                return
+            }
+        }
+    }
 }
