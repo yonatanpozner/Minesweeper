@@ -8,18 +8,28 @@
         <link rel="stylesheet" href="css/main.css" />
     </head>
 
-    <body onload="onInit()">
+    <body onload="onInit(0)">
+        <div class="game">
+            <div>
+                <button class="curr-level-btn level-btn" onclick="onLevelClicked(this,0)"> Easy</button>
+                <button class="level-btn" onclick="onLevelClicked(this,1)"> Medium</button>
+                <button class="level-btn" onclick="onLevelClicked(this,2)"> Hard</button>
+            </div>
+            <div>
+                <p class="lives"><span></span> lives left</p>
+                <button class="smiley" onclick="onResetGame()"></button>
+            </div>
+            <table class="board">
+                <tbody > </tbody>
+            </table>
+            <p class="creator"> 
+                Yonatan Pozner 
+            </p>
 
-        <table class="board">
-            <tbody > </tbody>
-        </table>
-        <p style="text-align: center;"> 
-            Yonatan Pozner 
-        </p>
-
-        <script src="js/game.js"></script>
-        <script src="js/board.js"></script>
-        <script src="js/utils.js"></script>
-        <script src="js/mines.js"></script>
+            <script src="js/game.js"></script>
+            <script src="js/board.js"></script>
+            <script src="js/utils.js"></script>
+            <script src="js/emojis.js"></script>
+        </div>
     </body>
 </html>
