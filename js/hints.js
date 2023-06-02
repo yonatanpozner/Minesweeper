@@ -9,8 +9,10 @@ function onHintClicked(el) {
 function handleClickOnHintMode(i,j){
     uncoverCellsAround({i,j})
     gGame.isHintOn = false
-    document.querySelector('.light').innerHTML = ''
-    setTimeout(coverCellsAround, 1000, {i,j}, 0)
+    var used = document.querySelector('.light')
+    used.classList.remove('light')
+    used.innerHTML = ''
+    setTimeout(coverCellsAround, 1000, {i,j})
 }
 
 function uncoverCellsAround(cell){
