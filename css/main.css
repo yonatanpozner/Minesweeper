@@ -1,9 +1,18 @@
 * {
-    box-sizing: border-box;
+    box-sizing: margin-box;
 }
 
 :root {
     --cell-size: 50px;
+}
+
+h1{
+    text-shadow: 2px 2px 3px #00A5FF;
+    box-shadow: 8px 6px 23px 6px #000;
+    width: 200px;
+    text-align: center;
+    margin: 50px auto;
+    background-color: rgb(166, 99, 11);
 }
 
 .board {
@@ -17,6 +26,7 @@
     height: var(--cell-size);
     border: 1px solid black;
     text-align: center;
+    padding: 2px;
 }
 
 .selected {
@@ -38,14 +48,10 @@
 
 .game {
     margin: auto;
-    margin-top: 150px;
     /* text-align: center; */
-    width: 500px;
-}
-
-.creator {
-    /* text-align: center; */
-    color: rgb(10, 8, 122);
+    width: 50vw;
+    min-width: 510px;
+    /* background-color: #00A5FF; */
 }
 
 .lives {
@@ -74,16 +80,19 @@
     margin: 4px 2px;
     transition-duration: 0.4s;
     cursor: pointer;
-    border: 2px solid #28912b;
+    border : 4px solid #3b973e;
+
+    border-radius: 3px;
+    width : 32%;
   }
 
 .level-btn:hover{
-    background-color: #28912b;
+    background-color: #3adc3f;
     color: white;
 }
 
 .curr-level-btn{
-    background-color: #166819;
+    background-color: #3b973e;
     color: white;
 
 }
@@ -100,6 +109,13 @@
     cursor: pointer;
 }
 
+.layer{
+    width: 32%;
+    margin: 20px auto;
+    text-align: center;
+    display: inline-block;
+}
+
 .hint-btn{
     border: none;
     color: black;
@@ -110,4 +126,48 @@
     transition-duration: 0.4s;
     cursor: pointer;
     background-color: white; 
+    width: 30%;
+}
+
+.undo{
+    border: none;
+    color: black; 
+    padding: 16px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    margin-top: 20px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+    border : 4px solid #e25e21;
+
+    border-radius: 3px;
+    width : 32%;
+}
+
+.undo:hover{
+    background-color: #7c3412;
+    color: white;
+}
+
+.creator{
+    text-align: center;
+    text-shadow: 2px 2px 3px #00A5FF;
+}
+
+.score{
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 20px;
+    letter-spacing: 1px;
+    word-spacing: -1.4px;
+    color: #000000;
+    font-weight: 700;
+    text-decoration: none;
+    font-style: normal;
+    font-variant: normal;
+    text-transform: none;
+    text-align: center;
+    
 }
