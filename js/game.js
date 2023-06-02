@@ -1,7 +1,7 @@
 'use strict'
 
-const LEVELS = [{ size: 4, minesCount: 2 }, { size: 6, minesCount: 14 }, { size: 8, minesCount: 32 }]
-const LIVES = 2
+const LEVELS = [{ size: 5, minesCount: 5 }, { size: 8, minesCount: 20 }, { size: 11, minesCount: 25 }]
+const LIVES = 3
 const VICTORY = 1
 const LOSS = 0
 
@@ -15,18 +15,20 @@ function onInit(level) {
         currLevel: LEVELS[level],
         lives: LIVES,
         emoji: HAPPY,
-        isHintOn: false
+        isHintOn: false,
+        score: 0
     }
     gSituations = []
 
-    
+
     createBoard()
-    addMines()
+    setMines()
     setMinesNegsCount()
     renderBoard()
     renderLives()
     renderEmoji()
     renderHints()
+    renderScore()
 }
 
 function onCellClicked(i, j) {
@@ -36,10 +38,10 @@ function onCellClicked(i, j) {
     if (!gGame.isOn) return
     if (cell.isShown) return
     if (cell.isMarked) return
-    if (gGame.isHintOn){
-        handleClickOnHintMode(i,j)
+    if (gGame.isHintOn) {
+        handleClickOnHintMode(i, j)
         return
-    } 
+    }
     if (gGame.isFirstClick && cell.isMine) {
         moveMine(i, j)
     }
@@ -54,18 +56,18 @@ function onCellClicked(i, j) {
             updateLives()
         }
     } else {
-        expandShown(i, j)
+        shown(i, j)
+        console.log('gGame.score: ', gGame.score)
     }
     if (checkVictory() && gGame.isOn) gameOver(VICTORY)
     renderBoard()
 }
 
-function onCellMarked(elCell, i, j, event) {
+function onCellMarked(i, j, event) {
     saveSituation()
     event.preventDefault()
-    if (elCell.classList.contains('cover') && gGame.isOn) {
+    if (!gBoard[i][j].isShown && gGame.isOn) {
         gBoard[i][j].isMarked = !gBoard[i][j].isMarked
-        gBoard[i][j].is
         if (checkVictory()) {
             gameOver(VICTORY)
         }
@@ -73,15 +75,14 @@ function onCellMarked(elCell, i, j, event) {
     }
 }
 
-function onLevelClicked(level, idx) {
-
-    var levelBtns = document.querySelectorAll('.level-btn')
-    for (var i = 0; i < levelBtns.length; ++i) {
-        levelBtns[i].classList.remove('curr-level-btn')
-        console.log('levelBtns[i]: ', levelBtns[i])
+function shown(i, j) {
+    if (!gBoard[i][j].minesAroundCount) {
+        expandShown(i, j)
+    } else {
+        gBoard[i][j].isShown = true
     }
-    level.classList.add('curr-level-btn')
-    onInit(idx)
+    gGame.score++
+    renderScore()
 }
 
 function expandShown(rowIdx, colIdx) {
@@ -93,12 +94,20 @@ function expandShown(rowIdx, colIdx) {
             var currCell = gBoard[i][j]
             if (!currCell.isMine && !currCell.isShown && !currCell.isMarked) {
                 currCell.isShown = true
+                gGame.score += 0.5
+                renderScore()
                 if (!currCell.minesAroundCount) {
                     expandShown(i, j)
                 }
             }
         }
     }
+}
+
+function onLevelClicked(elLevel, idx) {
+    document.querySelector('.curr-level-btn').classList.remove('curr-level-btn')
+    elLevel.classList.add('curr-level-btn')
+    onInit(idx)
 }
 
 function checkVictory() {
@@ -116,16 +125,9 @@ function checkVictory() {
 
 function gameOver(isVictory) {
     gGame.isOn = false
-    if (isVictory) {
-        gGame.emoji = WIN
-        renderEmoji()
-        console.log('victory!')
-    } else {
-        gGame.emoji = SAD
-        renderEmoji()
-        showAllCells()
-        console.log('game over')
-    }
+    gGame.emoji = isVictory ? WIN : SAD
+    renderEmoji()
+    if (!isVictory) showAllCells()
 }
 
 function onResetGame() {
@@ -143,4 +145,8 @@ function renderEmoji() {
 
 function renderLives() {
     document.querySelector('.lives span').innerHTML = gGame.lives
+}
+
+function renderScore() {
+    document.querySelector('.score span').innerHTML = gGame.score
 }
