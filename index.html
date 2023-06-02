@@ -10,34 +10,37 @@
 
     <body onload="onInit(0)">
         <div class="game">
+            <h1>Minesweeper</h1>
             <div>
                 <button class="curr-level-btn level-btn" onclick="onLevelClicked(this,0)"> Easy</button>
                 <button class="level-btn" onclick="onLevelClicked(this,1)"> Medium</button>
                 <button class="level-btn" onclick="onLevelClicked(this,2)"> Hard</button>
             </div>
-            <div>
-                <p class="lives"><span></span> lives left</p>
-                <button class="emoji" onclick="onResetGame()"></button>
-                <div>
-                    <button class="hint-btn" onclick="onHintClicked(this)"></button>
-                    <button class="hint-btn" onclick="onHintClicked(this)"></button>
-                    <button class="hint-btn" onclick="onHintClicked(this)"></button>
-                </div>
-            </div>
-            <table class="board">
-                <tbody > </tbody>
-            </table>
-            <button class="undo" onclick="ondo()"> undo </button>
-            <p class="creator"> 
-                Yonatan Pozner 
-            </p>
 
-            <script src="js/game.js"></script>
-            <script src="js/board.js"></script>
-            <script src="js/utils.js"></script>
-            <script src="js/emojis.js"></script>
-            <script src="js/hints.js"></script>
-            <script src="js/undo.js"></script>
+            <p class="lives layer"><span></span> lives left</p>
+            <button class="emoji layer" onclick="onResetGame()" title="Reset game"></button>
+            <div class="layer">
+                <button class="hint-btn" onclick="onHintClicked(this)" title="Hint"></button>
+                <button class="hint-btn" onclick="onHintClicked(this)" title="Hint"></button>
+                <button class="hint-btn" onclick="onHintClicked(this)" title="Hint"></button>
+            </div>
         </div>
+
+        <table class="board">
+            <tbody></tbody>
+        </table>
+
+        <div class="game">
+            <button class="undo layer" onclick="onUndo()" title="Undo the last action"> undo </button>
+            <p class="score layer">Your score  <span></span></p>
+            <p class="creator"> Yonatan Pozner </p>
+        </div>
+        
+        <script src="js/game.js"></script>
+        <script src="js/board.js"></script>
+        <script src="js/utils.js"></script>
+        <script src="js/emojis.js"></script>
+        <script src="js/hints.js"></script>
+        <script src="js/undo.js"></script>
     </body>
 </html>
