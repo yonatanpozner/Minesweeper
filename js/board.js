@@ -3,7 +3,6 @@
 var gBoard
 
 function createBoard() {
-    console.log('gGame: ', gGame)
     gBoard = []
     for (var i = 0; i < gGame.currLevel.size; ++i) {
         gBoard[i] = []
@@ -19,7 +18,7 @@ function createBoard() {
     }
 }
 
-function addMines() {
+function setMines() {
     var size = gGame.currLevel.size
     var randomCell = randomIntArrayInRange(size ** 2)
     for (var i = 0; i < gGame.currLevel.minesCount; ++i) {
@@ -43,7 +42,7 @@ function renderBoard() {
             strHTML += `<td class="cell ${className}"
                         data-i=${i}  data-j=${j}
                         onclick="onCellClicked(${i},${j})" 
-                        oncontextmenu="onCellMarked(this,${i},${j},event)">`
+                        oncontextmenu="onCellMarked(${i},${j},event)">`
             strHTML += `<p style="display: ${displayMode};">${text}</p>`
             strHTML += '</td>'
         }
