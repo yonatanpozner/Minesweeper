@@ -2,47 +2,61 @@
 
 var gSituations
 
-function ondo(){
-    if(gSituations.length){
-        gBoard = gSituations.pop()
-        renderBoard()
-    }
+function onUndo() {
+    if (!gGame.isOn || !gSituations.length) return
+
+    var situation = gSituations.pop()
+    gBoard = situation.board
+    gGame = situation.game
+    renderBoard()
+    renderLives()
+    renderScore()
 }
 
-function saveSituation(){
-    if(!gSituations.length){
-        gSituations.push(copyOfBoard(gBoard))
-    }
-    if(!compareBoards(gBoard, gSituations[gSituations.length - 1])){
-        gSituations.push(copyOfBoard(gBoard))
+function saveSituation() {
+    if (!gSituations.length || !compareBoards(gBoard, gSituations[gSituations.length - 1].board)) {
+        gSituations.push({ game: copyGame(gGame), board: copyBoard(gBoard) })
     }
     console.log(gSituations)
 }
 
-function copyOfBoard(board){
+function copyGame(game) {
+    return {
+        isOn: game.isOn,
+        isFirstClick: game.isFirstClick,
+        currLevelIdx: game.currLevelIdx,
+        currLevel: game.currLevel,
+        lives: game.lives,
+        emoji: game.emoji,
+        isHintOn: game.isHintOn,
+        score: game.score
+    }
+}
+
+function copyBoard(board) {
     var newBoard = []
-    for(var i = 0; i < board.length; ++i){
+    for (var i = 0; i < board.length; ++i) {
         newBoard[i] = []
-        for(var j = 0; j < board[0].length; ++j){
-            newBoard[i][j] = copyOfCell(board[i][j])
+        for (var j = 0; j < board[0].length; ++j) {
+            newBoard[i][j] = copyCell(board[i][j])
         }
     }
     return newBoard
 }
 
-function copyOfCell(cell){
-    var newCell = {}
-    newCell.minesAroundCount = cell.minesAroundCount
-    newCell.isShown = cell.isShown
-    newCell.isMine = cell.isMine
-    newCell.isMarked = cell.isMarked
-    return newCell
+function copyCell(cell) {
+    return {
+        minesAroundCount: cell.minesAroundCount,
+        isShown: cell.isShown,
+        isMine: cell.isMine,
+        isMarked: cell.isMarked
+    }
 }
 
-function compareBoards(board1,board2){
-    for(var i = 0; i < board1.length; ++i){
-        for(var j = 0; j < board1[0].length; ++j){
-            if(!compareCells(board1[i][j], board2[i][j])){
+function compareBoards(board1, board2) {
+    for (var i = 0; i < board1.length; ++i) {
+        for (var j = 0; j < board1[0].length; ++j) {
+            if (!compareCells(board1[i][j], board2[i][j])) {
                 return false
             }
         }
@@ -50,9 +64,9 @@ function compareBoards(board1,board2){
     return true
 }
 
-function compareCells(cell1,cell2){
+function compareCells(cell1, cell2) {
     return cell1.minesAroundCount === cell2.minesAroundCount &&
-            cell1.isShown === cell2.isShown &&
-            cell1.isMine === cell2.isMine &&
-            cell1.isMarked === cell2.isMarked
+        cell1.isShown === cell2.isShown &&
+        cell1.isMine === cell2.isMine &&
+        cell1.isMarked === cell2.isMarked
 }
